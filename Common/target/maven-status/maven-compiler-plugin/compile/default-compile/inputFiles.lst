@@ -1,0 +1,8 @@
+/Users/csthink/IdeaProjects/MyBatis-Basic/Common/src/main/java/com/csthink/bbs/entity/User.java
+/Users/csthink/IdeaProjects/MyBatis-Basic/Common/src/main/java/com/csthink/bbs/entity/Message.java
+/Users/csthink/IdeaProjects/MyBatis-Basic/Common/src/main/java/com/csthink/bbs/utils/MyBatisUtils.java
+/Users/csthink/IdeaProjects/MyBatis-Basic/Common/src/main/java/com/csthink/bbs/mapper/UserMapper.java
+/Users/csthink/IdeaProjects/MyBatis-Basic/Common/src/main/java/com/csthink/bbs/service/UserService.java
+/Users/csthink/IdeaProjects/MyBatis-Basic/Common/src/main/java/com/csthink/bbs/mapper/MessageMapper.java
+/Users/csthink/IdeaProjects/MyBatis-Basic/Common/src/main/java/com/csthink/bbs/service/MessageService.java
+/Users/csthink/IdeaProjects/MyBatis-Basic/Common/src/main/java/com/csthink/bbs/filter/CharsetEncodingFilter.java

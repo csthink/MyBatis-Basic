@@ -24,9 +24,9 @@ public class User {
 
     private String interest;
 
-    private Date created_at;
+    private Date createTime;
 
-    private Date updated_at;
+    private Date updateTime;
 
     public Integer getId() {
         return id;
@@ -108,20 +108,20 @@ public class User {
         this.interest = interest;
     }
 
-    public Date getCreated_at() {
-        return created_at;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public Date getUpdated_at() {
-        return updated_at;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdated_at(Date updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override
@@ -137,8 +137,8 @@ public class User {
                 ", address='" + address + '\'' +
                 ", photo='" + photo + '\'' +
                 ", interest='" + interest + '\'' +
-                ", created_at=" + created_at +
-                ", updated_at=" + updated_at +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
                 '}';
     }
 }

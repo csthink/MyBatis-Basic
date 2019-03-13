@@ -49,8 +49,8 @@ public class UserService {
      */
     public void addUser(User user) {
         Date now = new Date();
-        user.setCreated_at(now);
-        user.setUpdated_at(now);
+        user.setCreateTime(now);
+        user.setUpdateTime(now);
         SqlSession sqlSession = MyBatisUtils.openSession();
 
         try {
@@ -69,7 +69,7 @@ public class UserService {
      */
     public void updateUser(User user) {
         Date now = new Date();
-        user.setUpdated_at(now);
+        user.setUpdateTime(now);
         SqlSession sqlSession = MyBatisUtils.openSession();
 
         try {

@@ -14,7 +14,7 @@ public interface UserMapper {
      * @param size 要查询的数量
      * @return 用户集合
      */
-    @Select("SELECT * FROM `user` ORDER BY `create_time` DESC  LIMIT #{skip}, #{size}")
+    @Select("SELECT * FROM user ORDER BY create_time DESC LIMIT #{skip}, #{size}")
     @Results({
             @Result(id = true, column = "id", property = "id"),
             @Result(column = "username", property = "username"),
@@ -38,15 +38,16 @@ public interface UserMapper {
      * 新增用户
      * @param user 用户信息
      */
-    @Insert("INSERT `user`(`username`, `password`, `real_name`, `birthday`, `phone`, `address`)" +
-            "VALUES(#{user.username}, #{user.password}, #{user.realName} #{user.birthday} #{user.phone), #{user.address}")
+    @Insert("insert into user(username, password, real_name, birthday, phone, address, photo, interest) " +
+            "value (#{user.username}, #{user.password}, #{user.realName}, #{user.birthday}, #{user.phone}, " +
+            "#{user.address}, #{user.photo})")
     void addUser(User user);
 
     /**
      * 更新用户
      * @param user 用户信息
      */
-    @Update("<script>UPDATE `user`" +
+    @Update("<script>UPDATE user" +
             "<set>" +
             "<if test=\"username != null\">username = #{user.username},</if>" +
             "<if test=\"password != null\">password = #{user.password},</if>" +
@@ -63,6 +64,6 @@ public interface UserMapper {
      * 根据ID删除指定用户
      * @param id 用户ID
      */
-    @Delete("DELETE FROM `user` WHERE id = #{id}")
+    @Delete("DELETE FROM user WHERE id = #{id}")
     void deleteUser(Integer id);
 }
