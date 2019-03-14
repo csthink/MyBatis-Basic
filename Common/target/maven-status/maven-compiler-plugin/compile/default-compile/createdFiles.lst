@@ -1,4 +1,5 @@
 com/csthink/bbs/filter/CharsetEncodingFilter.class
+com/csthink/bbs/utils/ImageValidationUtils.class
 com/csthink/bbs/service/UserService.class
 com/csthink/bbs/entity/User.class
 com/csthink/bbs/entity/Message.class

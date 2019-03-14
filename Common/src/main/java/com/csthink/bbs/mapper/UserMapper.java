@@ -33,6 +33,16 @@ public interface UserMapper {
     @Select("SELECT count(*) FROM `user`")
     int countUsers();
 
+    /**
+     * 根据手机号查询用户
+     *
+     * @param phone 手机号
+     * @return 用户集合
+     */
+    @Select("SELECT id FROM user WHERE phone = #{phone}")
+    List<User> findUserByPhone(@Param("phone") String phone);
+
+
 
     /**
      * 新增用户

@@ -28,6 +28,18 @@ public class UserService {
         }
     }
 
+    public List<User> findUserByPhone(String phone) {
+        SqlSession sqlSession = MyBatisUtils.openSession();
+
+        try {
+            UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+            return mapper.findUserByPhone(phone);
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+
     /**
      * 统计用户数量
      * @return
