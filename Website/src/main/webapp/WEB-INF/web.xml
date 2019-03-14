@@ -16,6 +16,20 @@
         <error-code>500</error-code>
         <location>/WEB-INF/views/error/500.jsp</location>
     </error-page>
+
+    <filter>
+        <filter-name>CharsetEncodingFilter</filter-name>
+        <filter-class>com.csthink.bbs.filter.CharsetEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CharsetEncodingFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
     
     <servlet>
         <servlet-name>MessageServlet</servlet-name>
@@ -26,7 +40,67 @@
         <servlet-name>MessageServlet</servlet-name>
         <url-pattern>/message/list.do</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>register_prompt</servlet-name>
+        <servlet-class>com.csthink.bbs.servlet.RegisterServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>register_prompt</servlet-name>
+        <url-pattern>/register_prompt.do</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>register</servlet-name>
+        <servlet-class>com.csthink.bbs.servlet.RegisterServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>register</servlet-name>
+        <url-pattern>/register.do</url-pattern>
+    </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ImageValidationServlet</servlet-name>
+        <servlet-class>com.csthink.bbs.servlet.ImageValidationServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ImageValidationServlet</servlet-name>
+        <url-pattern>/image_verify_code.do</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>ImageValidationServlet</servlet-name>
+        <url-pattern>/checkImageVerifyCode.do</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>SendMsgServlet</servlet-name>
+        <servlet-class>com.csthink.bbs.servlet.SMSServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>SendMsgServlet</servlet-name>
+        <url-pattern>/sendSMS.do</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>SendMsgServlet</servlet-name>
+        <url-pattern>/checkSMS.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PhoneServlet</servlet-name>
+        <servlet-class>com.csthink.bbs.servlet.PhoneServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>PhoneServlet</servlet-name>
+        <url-pattern>/checkPhone.do</url-pattern>
+    </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.jpg</url-pattern>

@@ -32,7 +32,7 @@
                     <a class="dropdown-item" href="#">我的信息</a>
                     <a class="dropdown-item" href="#">我的留言</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">退出</a>
+                    <a class="dropdown-item" href="/logout.do">退出</a>
                 </div>
             </div>
         <%
@@ -40,10 +40,10 @@
         %>
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">注册</a>
+                    <a class="nav-link" href="/register_prompt.do">注册</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">登录 <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/login_prompt.do">登录 <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
         <%
@@ -76,7 +76,7 @@
         <div class="col">
             <c:forEach var="message" items="${messageList}">
                 <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                    <a class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1">${message.title}</h5>
                             <small><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${message.createTime}"/></small>

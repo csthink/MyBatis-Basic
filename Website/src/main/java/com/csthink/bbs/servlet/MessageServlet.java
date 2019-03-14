@@ -31,6 +31,7 @@ public class MessageServlet extends HttpServlet {
         if (null != pageStr && !"".equals(pageStr.trim())) {
             try {
                 page = Integer.parseInt(pageStr);
+//                page = Integer.valueOf(pageStr);
                 page = page > lastPage ? lastPage : ((page <= 0) ? 1 : page);
             } catch (NumberFormatException e) {
                 e.printStackTrace();
