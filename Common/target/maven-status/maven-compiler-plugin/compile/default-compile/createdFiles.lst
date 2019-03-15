@@ -1,3 +1,4 @@
+com/csthink/bbs/utils/CaptchaUtils.class
 com/csthink/bbs/filter/CharsetEncodingFilter.class
 com/csthink/bbs/utils/ImageValidationUtils.class
 com/csthink/bbs/service/UserService.class

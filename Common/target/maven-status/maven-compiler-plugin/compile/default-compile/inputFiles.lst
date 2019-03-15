@@ -1,4 +1,5 @@
 /Users/csthink/IdeaProjects/MyBatis-Basic/Common/src/main/java/com/csthink/bbs/entity/User.java
+/Users/csthink/IdeaProjects/MyBatis-Basic/Common/src/main/java/com/csthink/bbs/utils/CaptchaUtils.java
 /Users/csthink/IdeaProjects/MyBatis-Basic/Common/src/main/java/com/csthink/bbs/entity/Message.java
 /Users/csthink/IdeaProjects/MyBatis-Basic/Common/src/main/java/com/csthink/bbs/utils/MyBatisUtils.java
 /Users/csthink/IdeaProjects/MyBatis-Basic/Common/src/main/java/com/csthink/bbs/mapper/UserMapper.java
