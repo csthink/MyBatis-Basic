@@ -62,17 +62,17 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>ImageValidationServlet</servlet-name>
-        <servlet-class>com.csthink.bbs.servlet.ImageValidationServlet</servlet-class>
+        <servlet-name>CaptchaServlet</servlet-name>
+        <servlet-class>com.csthink.bbs.servlet.CaptchaServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>ImageValidationServlet</servlet-name>
+        <servlet-name>CaptchaServlet</servlet-name>
         <url-pattern>/captcha.do</url-pattern>
     </servlet-mapping>
     
     <servlet-mapping>
-        <servlet-name>ImageValidationServlet</servlet-name>
+        <servlet-name>CaptchaServlet</servlet-name>
         <url-pattern>/checkCaptcha.do</url-pattern>
     </servlet-mapping>
     

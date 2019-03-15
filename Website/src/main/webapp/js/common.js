@@ -55,9 +55,9 @@ function invalidPhoneFeedback() {
 /**
  * 图形验证码有效的反馈
  */
-function validImageVerifyCodeFeedback() {
+function validImageVerifyCodeFeedback(msg) {
     $imageVerifyCode.parent().find(".error-tips").addClass("invisible").removeClass("visible"); // 关闭错误提示
-    $imageVerifyCode.parent().find(".normal-tips").show(); // 关闭正常提示
+    $imageVerifyCode.parent().find(".normal-tips").show().text(msg); // 开启正常提示
     $sendMsgBtn.attr("disabled", false); // 启用发送短信按钮
     $smsVerifyCode.attr("disabled", false).focus(); // 启用短信文本框
 }
@@ -65,8 +65,8 @@ function validImageVerifyCodeFeedback() {
 /**
  * 图形验证码输入错误的反馈
  */
-function invalidImageVerifyCodeFeedback() {
-    $imageVerifyCode.parent().find(".error-tips").addClass("visible").removeClass("invisible"); // 打开错误提示
+function invalidImageVerifyCodeFeedback(msg) {
+    $imageVerifyCode.parent().find(".error-tips").addClass("visible").removeClass("invisible").text(msg); // 打开错误提示
     $imageVerifyCode.parent().find(".normal-tips").hide(); // 关闭正常提示
     $sendMsgBtn.attr("disabled", true); // 禁用发送短信按钮
     $smsVerifyCode.val("").attr("disabled", true).parent().find(".error-tips").addClass("invisible").removeClass("visible"); // 禁用短信文本框
@@ -75,18 +75,18 @@ function invalidImageVerifyCodeFeedback() {
 /**
  * 短信验证码输入正确的反馈
  */
-function validSMSVerifyCodeFeedback() {
+function validSMSVerifyCodeFeedback(msg) {
     $registerBtn.attr("disabled", false).Shake(1, 6); // 启用注册按钮
     $smsVerifyCode.parent().find(".error-tips").addClass("invisible").removeClass("visible"); // 关闭错误提示
-    $smsVerifyCode.parent().find(".normal-tips").show(); // 打开正常提示
+    $smsVerifyCode.parent().find(".normal-tips").show().text(msg); // 打开正常提示
 }
 
 /**
  * 短信验证码输入错误的反馈
  */
-function invalidSMSVerifyCodeFeedback() {
+function invalidSMSVerifyCodeFeedback(msg) {
     $registerBtn.attr("disabled", true); // 禁用注册按钮
-    $smsVerifyCode.parent().find(".error-tips").addClass("visible").removeClass("invisible"); // 打开错误提示
+    $smsVerifyCode.parent().find(".error-tips").addClass("visible").removeClass("invisible").text(msg); // 打开错误提示
     $smsVerifyCode.parent().find(".normal-tips").hide(); // 关闭正常提示
 }
 
@@ -130,6 +130,9 @@ function countdown(obj) {
     }
 }
 
+/**
+ * 手机号校验
+ */
 function checkPhone() {
     var pattern = /^1[34578]\d{9}$/;
     // 判断手机号是否有效
@@ -155,6 +158,9 @@ function checkPhone() {
     }
 }
 
+/**
+ * 图像验证码校验
+ */
 function checkImageCode() {
     // 判断验证码输入是否合法
     if ($imageVerifyCode.val().length === 4) {
@@ -164,12 +170,11 @@ function checkImageCode() {
             function (result) {
                 console.log("img: " + result);
                 var flag = result.flag;
+                var msg = result.msg;
                 if (flag === true) {
-                    console.log("img ok");
-                    validImageVerifyCodeFeedback();
+                    validImageVerifyCodeFeedback(msg);
                 } else {
-                    console.log("img fail");
-                    invalidImageVerifyCodeFeedback();
+                    invalidImageVerifyCodeFeedback(msg);
                 }
             }, "json");
     } else {
@@ -177,6 +182,9 @@ function checkImageCode() {
     }
 }
 
+/**
+ * 短信验证码校验
+ */
 function checkSMSCode() {
     if ($smsVerifyCode.val().length === 4) {
         // 发送短信验证码
@@ -187,12 +195,12 @@ function checkSMSCode() {
             function (result) {
                 console.log("sms: " + result);
                 var flag = result.flag;
+                var msg = result.msg;
                 if (flag === true) {
-                    console.log("sms ok");
-                    validSMSVerifyCodeFeedback();
+                    validSMSVerifyCodeFeedback(msg);
                 } else {
                     console.log("sms fail");
-                    invalidSMSVerifyCodeFeedback();
+                    invalidSMSVerifyCodeFeedback(msg);
                 }
             }, "json");
     } else {
