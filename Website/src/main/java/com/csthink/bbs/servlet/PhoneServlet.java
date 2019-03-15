@@ -1,8 +1,8 @@
 package com.csthink.bbs.servlet;
 
+import com.alibaba.fastjson.JSONObject;
 import com.csthink.bbs.entity.User;
 import com.csthink.bbs.service.UserService;
-import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

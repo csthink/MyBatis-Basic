@@ -11,7 +11,8 @@ import java.util.Random;
 
 public class ImageValidationUtils {
 
-    private static String VERIFY_CODES = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+//    private static String VERIFY_CODES = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+    private static String VERIFY_CODES = "23456789";
 
     private static Random random = new Random();
 

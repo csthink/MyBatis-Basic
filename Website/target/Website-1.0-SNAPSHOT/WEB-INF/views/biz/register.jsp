@@ -32,9 +32,8 @@
 </nav>
 
 <div class="container" style="margin-top: 25px;">
-
-    <div class="col-6 offset-4">
-        <div class="row" style="margin-top: 1rem; display: none;" id="rightNotice">
+    <div class="col-4 offset-4" style="height: 3rem;">
+        <div class="row justify-content-center" style="margin-top: 1rem; display: none;" id="rightNotice">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong>恭喜您!</strong> 该手机号可以用于注册.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -42,8 +41,7 @@
                 </button>
             </div>
         </div>
-
-        <div class="row" style="margin-top: 1rem; display:none;" id="errorNotice">
+        <div class="row justify-content-center" style="margin-top: 1rem; display:none;" id="errorNotice">
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 <strong>该手机号已被注册!</strong> 请直接 <a href="/login_prompt.do">登录</a>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -56,48 +54,50 @@
     <div class="row" style="margin-top: 2rem">
         <div class="col-8 offset-2 jumbotron">
             <form>
-                <div class="form-group row" id="phoneInputModule">
-                    <label for="phone" class="col-sm-3 col-form-label text-right">手机</label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入手机号" autofocus>
-                        <small class="normal-tips text-dark">此手机将作为登录用户名，请谨慎填写</small>
-                        <small class="error-tips text-danger" style="display: none;">手机号无效</small>
+                <div id="regPage1">
+                    <div class="form-group row">
+                        <label for="phone" class="col-sm-3 col-form-label text-right">手机</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入手机号" autofocus>
+                            <small class="normal-tips text-dark">此手机将作为登录用户名，请谨慎填写</small>
+                            <small class="error-tips text-danger" style="display: none;">手机号无效</small>
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-top: 4rem;">
+                        <div class="col-sm-2 offset-5">
+                            <button type="button" class="btn btn-dark" id="nextBtn" disabled>下一步</button>
+                        </div>
                     </div>
                 </div>
+                <div id="regPage2" style="display: none;">
+                    <div class="form-group row">
+                        <label for="imageVerifyCode" class="col-sm-3 col-form-label text-right">图形验证码</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="imageVerifyCode" placeholder="请输入图形验证码" name="imageVerifyCode">
+                            <small class="normal-tips text-dark"></small>
+                            <small class="error-tips text-danger invisible">图形验证码错误</small>
+                        </div>
+                        <div class="col-sm-3">
+                            <img src="/captcha.do" id="verifyImage" alt="图形验证码" width="100%" height="40px" onclick="javascript:changeVerifyImage()" style="cursor: pointer;">
+                        </div>
+                    </div>
 
-                <div class="form-group row" style="margin-top: 4rem;">
-                    <div class="col-sm-2 offset-5">
-                        <button type="button" class="btn btn-dark" id="nextBtn" disabled>下一步</button>
+                    <div class="form-group row">
+                        <label for="smsVerifyCode" class="col-sm-3 col-form-label text-right">手机验证码</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="smsVerifyCode" placeholder="请输入短信验证码" name="smsVerifyCode" disabled>
+                            <small class="normal-tips text-dark"></small>
+                            <small class="error-tips text-danger invisible">短信校验失败</small>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-dark active" id="sendMsgBtn" data-toggle="button" aria-pressed="false" autocomplete="off" style="width: 100%;" disabled>发送验证码</button>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group row" id="imageVerifyModule" style="display: none;">
-                    <label for="imageVerifyCode" class="col-sm-3 col-form-label text-right">图形验证码</label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="imageVerifyCode" placeholder="请输入图形验证码" name="imageVerifyCode">
-                        <small class="normal-tips text-dark">完成验证才能继续操作哦</small>
-                        <small class="error-tips text-danger" style="display: none;">图形验证码错误</small>
-                    </div>
-                    <div class="col-sm-3">
-                        <img src="/image_verify_code.do" id="verifyImage" alt="图形验证码" width="100%" height="40px" onclick="javascript:changeVerifyImage()" style="cursor: pointer;">
-                    </div>
-                </div>
-
-                <div class="form-group row" id="msgVerifyModule" style="display: none">
-                    <label for="msgVerifyCode" class="col-sm-3 col-form-label text-right">手机验证码</label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="msgVerifyCode" placeholder="请输入短信验证码" name="msgVerifyCode" disabled>
-                        <small class="normal-tips text-dark">小不点已发送一条验证短信到你的手机</small>
-                        <small class="error-tips text-danger" style="display: none;">短信校验失败</small>
-                    </div>
-                    <div class="col-sm-3">
-                        <button type="button" class="btn btn-dark active" id="sendMsgBtn" data-toggle="button" aria-pressed="false" autocomplete="off" style="width: 100%;" disabled>发送验证码</button>
-                    </div>
-                </div>
-                
-                <div class="form-group row" style="margin-top: 4rem; display: none;" id="submitModule">
-                    <div class="col-sm-2 offset-5">
-                        <button type="submit" class="btn btn-dark" id="registerBtn" disabled>注册</button>
+                    <div class="form-group row" style="margin-top: 4rem;">
+                        <div class="col-sm-2 offset-5">
+                            <button type="submit" class="btn btn-dark" id="registerBtn" disabled>注册</button>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -112,33 +112,5 @@
 <!-- Then Material JavaScript on top of Bootstrap JavaScript -->
 <script src="/js/material.min.js"></script>
 <script src="/js/common.js"></script>
-<script>
-    $(function () {
-        $("form").submit(function () {
-
-           return false;
-        });
-    })
-
-
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
-    // (function() {
-    //     'use strict';
-    //     window.addEventListener('load', function() {
-    //         // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    //         var forms = document.getElementsByClassName('needs-validation');
-    //         // Loop over them and prevent submission
-    //         var validation = Array.prototype.filter.call(forms, function(form) {
-    //             form.addEventListener('submit', function(event) {
-    //                 if (form.checkValidity() === false) {
-    //                     event.preventDefault();
-    //                     event.stopPropagation();
-    //                 }
-    //                 form.classList.add('was-validated');
-    //             }, false);
-    //         });
-    //     }, false);
-    // })();
-</script>
 </body>
 </html>

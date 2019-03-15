@@ -1,18 +1,14 @@
-var $phoneInputModule = $("#phoneInputModule"); // 手机号输入模块
-var $imageVerifyModule = $("#imageVerifyModule"); // 图形验证模块
+var $regPage1 = $("#regPage1"); // 手机号输入模块
+var $regPage2 = $("#regPage2"); // 手机号输入模块
 var $phoneNumModule = $("#phoneNumModule"); // 手机号发短信提示模块
-var $msgVerifyModule = $("#msgVerifyModule"); // 短信验证模块
-var $submitModule = $("#submitModule"); // 提交模块
-
-var $rightNotice = $("#rightNotice");
-var $errorNotice = $("#errorNotice");
-
+var $rightNotice = $("#rightNotice"); // 手机号校验正确提示框
+var $errorNotice = $("#errorNotice"); // 手机号校验错误提示框
 var $phone = $("input[name=phone]"); // 手机号文本框
 var $imageVerifyCode = $("input[name=imageVerifyCode]"); // 图片验证码文本框
-var $msgVerifyCode = $("input[name=msgVerifyCode]"); // 短信验证码文本框
+var $smsVerifyCode = $("input[name=smsVerifyCode]"); // 短信验证码文本框
 var $sendMsgBtn = $("#sendMsgBtn"); // 发送短信按钮
 var $nextBtn = $("#nextBtn"); // 下一步按钮
-
+var $registerBtn = $("#registerBtn"); // 注册提交按钮
 
 var countdownInit = 5; // 倒计时初始化时间
 var countToZeroTime = 5; // 倒计时秒数
@@ -21,8 +17,12 @@ var countToZeroTime = 5; // 倒计时秒数
  * 获取图片验证码
  */
 function changeVerifyImage() {
-    $("#verifyImage").attr("src","/image_verify_code.do?s=" + Math.random());
-    $imageVerifyCode.val('').parent().find(".error-tips").addClass("invisible").removeClass("visible"); // 图形文本框置空,关闭错误提示
+    $("#verifyImage").attr("src", "/captcha.do?s=" + Math.random());
+    $imageVerifyCode.val("").focus();
+    $imageVerifyCode.parent().find(".error-tips").addClass("invisible").removeClass("visible"); // 关闭错误提示
+    $imageVerifyCode.parent().find(".normal-tips").hide(); // 关闭正常提示
+    $sendMsgBtn.attr("disabled", true); // 禁用发送短信按钮
+    $smsVerifyCode.val("").attr("disabled", true).parent().find(".error-tips").addClass("invisible").removeClass("visible"); // 禁用短信文本框
 }
 
 /**
@@ -32,14 +32,14 @@ function validPhoneFeedback() {
     $phone.parent().find(".normal-tips").show(); // 打开正常提示
     $phone.parent().find(".error-tips").hide(); // 关闭错误提示
     var tempPhone = $phone.val(); // 获取用户输入的手机号
-    tempPhone = tempPhone.substr(0,3) + " " + tempPhone.substr(3,4) + " " + tempPhone.substr(7,4); // 格式化手机号输出
+    tempPhone = tempPhone.substr(0, 3) + " " + tempPhone.substr(3, 4) + " " + tempPhone.substr(7, 4); // 格式化手机号输出
     $phoneNumModule.find(".phoneNum").html(tempPhone); // 给手机号发短信模块的手机号填充值
-    $nextBtn.attr("disabled", false); // 启用下一步
-    $rightNotice.show();
-    $errorNotice.hide();
-    setTimeout(function() {
-        $rightNotice.hide("slow");
-    },3000)
+    $rightNotice.fadeIn(1500);
+    $errorNotice.hide(1500);
+    setTimeout(function () {
+        $rightNotice.fadeOut(2500);
+        $nextBtn.attr("disabled", false); // 启用下一步
+    }, 100);
 }
 
 /**
@@ -56,38 +56,38 @@ function invalidPhoneFeedback() {
  * 图形验证码有效的反馈
  */
 function validImageVerifyCodeFeedback() {
-    $imageVerifyCode.parent().find(".error-tips").hide(); // 关闭错误提示
-    $imageVerifyCode.parent().find(".normal-tips").hide(); // 关闭正常提示
+    $imageVerifyCode.parent().find(".error-tips").addClass("invisible").removeClass("visible"); // 关闭错误提示
+    $imageVerifyCode.parent().find(".normal-tips").show(); // 关闭正常提示
     $sendMsgBtn.attr("disabled", false); // 启用发送短信按钮
-    $msgVerifyCode.attr("disabled", false); // 启用短信文本框
+    $smsVerifyCode.attr("disabled", false).focus(); // 启用短信文本框
 }
 
 /**
  * 图形验证码输入错误的反馈
  */
 function invalidImageVerifyCodeFeedback() {
-    $imageVerifyCode.parent().find(".error-tips").show(); // 打开错误提示
+    $imageVerifyCode.parent().find(".error-tips").addClass("visible").removeClass("invisible"); // 打开错误提示
     $imageVerifyCode.parent().find(".normal-tips").hide(); // 关闭正常提示
     $sendMsgBtn.attr("disabled", true); // 禁用发送短信按钮
-    $msgVerifyCode.val("").attr("disabled", true); // 禁用短信文本框
+    $smsVerifyCode.val("").attr("disabled", true).parent().find(".error-tips").addClass("invisible").removeClass("visible"); // 禁用短信文本框
 }
 
 /**
  * 短信验证码输入正确的反馈
  */
 function validSMSVerifyCodeFeedback() {
-    $("#registerBtn").attr("disabled", false).Shake(2, 10); // 启用注册按钮
-    $msgVerifyCode.parent().find(".error-tips").hide(); // 关闭错误提示
-    $msgVerifyCode.parent().find(".normal-tips").hide(); // 打开正常提示
+    $registerBtn.attr("disabled", false).Shake(1, 6); // 启用注册按钮
+    $smsVerifyCode.parent().find(".error-tips").addClass("invisible").removeClass("visible"); // 关闭错误提示
+    $smsVerifyCode.parent().find(".normal-tips").show(); // 打开正常提示
 }
 
 /**
  * 短信验证码输入错误的反馈
  */
 function invalidSMSVerifyCodeFeedback() {
-    $("#registerBtn").attr("disabled", true); // 禁用注册按钮
-    $msgVerifyCode.parent().find(".error-tips").show(); // 打开错误提示
-    $msgVerifyCode.parent().find(".normal-tips").hide(); // 关闭正常提示
+    $registerBtn.attr("disabled", true); // 禁用注册按钮
+    $smsVerifyCode.parent().find(".error-tips").addClass("visible").removeClass("invisible"); // 打开错误提示
+    $smsVerifyCode.parent().find(".normal-tips").hide(); // 关闭正常提示
 }
 
 /**
@@ -97,14 +97,14 @@ function invalidSMSVerifyCodeFeedback() {
  * @returns {jQuery.fn.Shake}
  * @constructor
  */
-jQuery.fn.Shake = function (shakeNum , shakeDistance) {
+jQuery.fn.Shake = function (shakeNum, shakeDistance) {
     this.each(function () {
         var jSelf = $(this);
-        jSelf.css({ position: 'relative' });
+        jSelf.css({position: 'relative'});
         for (var x = 1; x <= shakeNum; x++) {
-            jSelf.animate({ left: (-shakeDistance) }, 50)
-                .animate({ left: shakeDistance }, 50)
-                .animate({ left: 0 }, 50);
+            jSelf.animate({left: (-shakeDistance)}, 300)
+                .animate({left: shakeDistance}, 300)
+                .animate({left: 0}, 50);
         }
     });
 
@@ -123,10 +123,10 @@ function countdown(obj) {
     } else {
         obj.attr("disabled", true);
         obj.html("重新发送(" + countToZeroTime + ")");
-        countToZeroTime --;
-        setTimeout(function() {
+        countToZeroTime--;
+        setTimeout(function () {
             countdown(obj)
-        },1000)
+        }, 1000)
     }
 }
 
@@ -134,15 +134,10 @@ function checkPhone() {
     var pattern = /^1[34578]\d{9}$/;
     // 判断手机号是否有效
     if (!pattern.test($phone.val())) {
-        // 手机号无效
-        console.log("手机号无效");
+        // 手机号不合法
         invalidPhoneFeedback();
-        return false;
     } else {
-        // 手机号有效
-        // TEMP
-        console.log("手机号有效");
-        // todo : ajax 验证手机号是否已注册
+        // 手机号合法,验证手机号是否已注册
         $.post("/checkPhone.do",
             {
                 phone: $phone.val()
@@ -153,29 +148,8 @@ function checkPhone() {
                     validPhoneFeedback();
                 } else {
                     invalidPhoneFeedback();
-                    $errorNotice.show();
+                    $errorNotice.slideDown("fast");
                     $rightNotice.hide();
-                }
-            }, "json");
-    }
-}
-
-function checkSMSCode() {
-    if ($msgVerifyCode.val() === "" || $msgVerifyCode.val().length !== 4) {
-        invalidSMSVerifyCodeFeedback();
-    } else {
-        // 发送短信验证码
-        $.post("/checkSMS.do",
-            {
-                code: $msgVerifyCode.val()
-            },
-            function (result) {
-                console.log(result);
-                var flag = result.flag;
-                if (flag === true) {
-                    validSMSVerifyCodeFeedback();
-                } else {
-                    invalidSMSVerifyCodeFeedback()
                 }
             }, "json");
     }
@@ -183,50 +157,70 @@ function checkSMSCode() {
 
 function checkImageCode() {
     // 判断验证码输入是否合法
-    if ($imageVerifyCode.val() === '' || $imageVerifyCode.val().length !== 4) {
-        // 验证码不合法
-        console.log("验证码不合法");
-        invalidImageVerifyCodeFeedback();
-    } else {
-        console.log("验证码ajax");
-        // 验证码合法
+    if ($imageVerifyCode.val().length === 4) {
         // 校验验证码
-        $.post("/checkImageVerifyCode.do",
+        $.post("/checkCaptcha.do",
             {code: $imageVerifyCode.val()},
             function (result) {
+                console.log("img: " + result);
                 var flag = result.flag;
-                if (flag === true) { // 验证码输入正确
+                if (flag === true) {
+                    console.log("img ok");
                     validImageVerifyCodeFeedback();
-                } else { // 验证码输入错误
-                    console.log("验证码不合法");
+                } else {
+                    console.log("img fail");
                     invalidImageVerifyCodeFeedback();
                 }
             }, "json");
+    } else {
+        invalidImageVerifyCodeFeedback();
+    }
+}
+
+function checkSMSCode() {
+    if ($smsVerifyCode.val().length === 4) {
+        // 发送短信验证码
+        $.post("/checkSMS.do",
+            {
+                code: $smsVerifyCode.val()
+            },
+            function (result) {
+                console.log("sms: " + result);
+                var flag = result.flag;
+                if (flag === true) {
+                    console.log("sms ok");
+                    validSMSVerifyCodeFeedback();
+                } else {
+                    console.log("sms fail");
+                    invalidSMSVerifyCodeFeedback();
+                }
+            }, "json");
+    } else {
+        invalidSMSVerifyCodeFeedback();
     }
 }
 
 $(function () {
     // 手机号文本框
-    $phone.blur(function () {
+    $phone.keyup(function () {
         checkPhone();
     }).focus(function () {
         $errorNotice.hide();
         $rightNotice.hide();
     });
 
+    // 下一步按钮
     $nextBtn.click(function () {
-        $(this).hide();
+        $nextBtn.hide();
         $rightNotice.hide();
         $errorNotice.hide();
-        $phoneInputModule.hide();
-        $imageVerifyModule.show();
-        $phoneNumModule.show();
-        $msgVerifyModule.show();
-        $submitModule.show();
+        $regPage1.hide();
+        $regPage2.show();
+        $imageVerifyCode.focus();
     });
 
     // 图片验证码文本框
-    $imageVerifyCode.blur(function () {
+    $imageVerifyCode.keyup(function () {
         checkImageCode();
     });
 
@@ -239,14 +233,12 @@ $(function () {
                 phone: $phone.val()
             },
             function (result) {
-                console.log(result);
+                console.log("sendSMS: " + result);
             }, "json");
     });
 
     // 短信验证码文本框
-    $msgVerifyCode.blur(function () {
+    $smsVerifyCode.keyup(function () {
         checkSMSCode();
-    }).focus(function () {
-        checkImageCode();
-    })
+    });
 });

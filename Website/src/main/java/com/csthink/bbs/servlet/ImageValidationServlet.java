@@ -1,7 +1,7 @@
 package com.csthink.bbs.servlet;
 
+import com.alibaba.fastjson.JSONObject;
 import com.csthink.bbs.utils.ImageValidationUtils;
-import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +11,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+//import org.json.JSONObject;
+
 /**
  * 生成图形验证码
  */
@@ -19,7 +21,8 @@ public class ImageValidationServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // 生成图形验证码
-        if ("/image_verify_code.do".equals(req.getServletPath())) {
+        if ("/captcha.do".equals(req.getServletPath())) {
+            // 禁止图像缓存
             resp.setHeader("Pragma", "No-cache");
             resp.setHeader("Cache-Control", "no-cache");
             resp.setDateHeader("Expires", 0);
@@ -40,7 +43,7 @@ public class ImageValidationServlet extends HttpServlet {
             // 将验证码转换小写后写入session
             session.setAttribute("verifyCode", verifyCode.toLowerCase());
             ImageValidationUtils.outputImage(resp.getOutputStream(), verifyCode);
-        } else if ("/checkImageVerifyCode.do".equals(req.getServletPath())) {
+        } else if ("/checkCaptcha.do".equals(req.getServletPath())) {
             // 校验图形验证码
             String code = req.getParameter("code");
 

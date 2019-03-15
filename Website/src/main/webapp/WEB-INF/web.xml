@@ -68,12 +68,12 @@
 
     <servlet-mapping>
         <servlet-name>ImageValidationServlet</servlet-name>
-        <url-pattern>/image_verify_code.do</url-pattern>
+        <url-pattern>/captcha.do</url-pattern>
     </servlet-mapping>
     
     <servlet-mapping>
         <servlet-name>ImageValidationServlet</servlet-name>
-        <url-pattern>/checkImageVerifyCode.do</url-pattern>
+        <url-pattern>/checkCaptcha.do</url-pattern>
     </servlet-mapping>
     
     <servlet>
