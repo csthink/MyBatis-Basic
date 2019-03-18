@@ -18,40 +18,42 @@ import java.util.Random;
 
 public class SMSServlet extends HttpServlet {
 
-    private int expire; // 验证码过期时间(秒)
-
-    private String sessionKey;
-
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        sessionKey = config.getServletContext().getInitParameter("SMS_REG_SESSION_KEY");
-        expire = Integer.valueOf(config.getServletContext().getInitParameter("SMS_REG_EXPIRE_TIME"));
-    }
-
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int expire = 0; // 验证码过期时间(秒)
+        String sessionKey = "";
+        String type = req.getParameter("type"); // 区分是注册("register")还是登录("login")
+
+        if ("register".equals(type)) {
+            sessionKey = req.getServletContext().getInitParameter("SMS_REG_SESSION_KEY");
+            expire = Integer.valueOf(req.getServletContext().getInitParameter("SMS_REG_EXPIRE_TIME"));
+        } else if ("login".equals(type)) {
+            sessionKey = req.getServletContext().getInitParameter("SMS_LOGIN_SESSION_KEY");
+            expire = Integer.valueOf(req.getServletContext().getInitParameter("SMS_LOGIN_EXPIRE_TIME"));
+        }
+
         if ("/sendSMS.do".equals(req.getServletPath())) { // 发送短信验证码
             Map<String, Object> data = new HashMap<>();
             boolean flag = false;
             String msg = "验证码发送失败,请重新发送";
             String phone = req.getParameter("phone"); // 获取要发送的手机号
 
+
             if (StringUtils.isEmpty(phone)) {
                 msg = "手机号无效，请重新填写";
             } else {
-                String smsRegCode = String.valueOf(new Random().nextInt(8999) + 1000); // 生成四位验证码
+                String smsCode = String.valueOf(new Random().nextInt(8999) + 1000); // 生成四位验证码
                 SMSService smsService = new SMSService();
                 //String smsContent = "【小不点】验证码 " + smsRegCode + ",用于注册，10分钟内有效。验证码提供给他人可能导致账号被盗，请勿泄露，谨防被骗。";
-                String smsContent = "小不点验证码 " + smsRegCode + ",用于注册，10分钟内有效。验证码提供给他人可能导致账号被盗，请勿泄露，谨防被骗。";
+                String smsContent = "小不点验证码 " + smsCode + ",用于注册登录，5分钟内有效。验证码提供给他人可能导致账号被盗，请勿泄露，谨防被骗。";
                 Map<String, Object> resultMap = smsService.send(phone, smsContent); // 调用短信发送服务
 
                 if (null != resultMap.get("code") && Integer.valueOf(resultMap.get("code").toString()) == 200) {
                     flag = true;
                     msg = "验证码已发送";
+                    // 将验证码存到session中,同时存入创建时间
+                    VerifyCodeUtils.saveToSession(req.getSession(), smsCode, sessionKey);
                 }
-                // 将验证码存到session中,同时存入创建时间
-                VerifyCodeUtils.saveToSession(req.getSession(), smsRegCode, sessionKey);
             }
 
             data.put("flag", flag);

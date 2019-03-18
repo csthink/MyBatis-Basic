@@ -32,11 +32,7 @@ public class PhoneServlet extends HttpServlet {
 
         if (null != phone && !"".equals(phone.trim())) {
             List<User> userList = userService.findUserByPhone(phone);
-            if (!userList.isEmpty()) {
-                flag = false;
-            } else {
-                flag = true;
-            }
+            flag = userList.isEmpty();
         }
 
         jsonObject.put("flag", flag);

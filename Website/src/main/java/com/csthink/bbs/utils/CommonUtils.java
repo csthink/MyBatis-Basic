@@ -8,7 +8,6 @@
 
 package com.csthink.bbs.utils;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -60,6 +59,13 @@ public class CommonUtils {
         return password;
     }
 
+    /**
+     * MD5加密
+     *
+     * @param str
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
     public static String encryptByMD5(String str) throws NoSuchAlgorithmException {
         // 生成一个MD5加密计算摘要
         MessageDigest md = MessageDigest.getInstance("MD5");
@@ -70,7 +76,15 @@ public class CommonUtils {
         return new BigInteger(1, md.digest()).toString(16);
     }
 
-    public boolean checkPassword(String newPwd, String oldPwd) throws NoSuchAlgorithmException {
+    /**
+     * 检查密码是否正确
+     *
+     * @param newPwd
+     * @param oldPwd
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
+    public static boolean checkPassword(String newPwd, String oldPwd) throws NoSuchAlgorithmException {
         return encryptByMD5(newPwd).equals(oldPwd);
     }
 

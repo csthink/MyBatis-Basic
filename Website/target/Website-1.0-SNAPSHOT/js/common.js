@@ -1,6 +1,5 @@
-var $regPage1 = $("#regPage1"); // 手机号输入模块
-var $regPage2 = $("#regPage2"); // 手机号输入模块
-var $phoneNumModule = $("#phoneNumModule"); // 手机号发短信提示模块
+var $regPage1 = $("#regPage1"); // 注册页面1模块
+var $regPage2 = $("#regPage2"); // 注册页面2模块
 var $rightNotice = $("#rightNotice"); // 手机号校验正确提示框
 var $errorNotice = $("#errorNotice"); // 手机号校验错误提示框
 var $phone = $("input[name=phone]"); // 手机号文本框
@@ -12,6 +11,12 @@ var $registerBtn = $("#registerBtn"); // 注册提交按钮
 
 var countdownInit = 5; // 倒计时初始化时间
 var countToZeroTime = 5; // 倒计时秒数
+
+var $loginPage1 = $("#loginPage1");
+var $loginPage2 = $("#loginPage2");
+var $changeToPage1 = $("#changeToPage1");
+var $changeToPage2 = $("#changeToPage2");
+var pathName = window.location.pathname;
 
 /**
  * 获取图片验证码
@@ -31,15 +36,18 @@ function changeVerifyImage() {
 function validPhoneFeedback() {
     $phone.parent().find(".normal-tips").show(); // 打开正常提示
     $phone.parent().find(".error-tips").hide(); // 关闭错误提示
-    var tempPhone = $phone.val(); // 获取用户输入的手机号
-    tempPhone = tempPhone.substr(0, 3) + " " + tempPhone.substr(3, 4) + " " + tempPhone.substr(7, 4); // 格式化手机号输出
-    $phoneNumModule.find(".phoneNum").html(tempPhone); // 给手机号发短信模块的手机号填充值
-    $rightNotice.fadeIn(1500);
     $errorNotice.hide(1500);
-    setTimeout(function () {
-        $rightNotice.fadeOut(2500);
-        $nextBtn.attr("disabled", false); // 启用下一步
-    }, 100);
+
+    if (pathName === "/register_prompt.do") {
+        $rightNotice.fadeIn(1500);
+        setTimeout(function () {
+            $rightNotice.fadeOut(2500);
+            $nextBtn.attr("disabled", false); // 启用下一步
+        }, 100);
+    } else if (pathName === "/login_prompt.do" || pathName === "/login.do") {
+        $sendMsgBtn.attr("disabled", false); // 启用发送短信按钮
+        $smsVerifyCode.attr("disabled", false).focus(); // 启用短信文本框
+    }
 }
 
 /**
@@ -48,8 +56,14 @@ function validPhoneFeedback() {
 function invalidPhoneFeedback() {
     $phone.parent().find(".normal-tips").hide(); // 关闭正常提示
     $phone.parent().find(".error-tips").show(); // 打开错误提示
-    $nextBtn.attr("disabled", true); // 禁用下一步
     $rightNotice.hide();
+
+    if (pathName === "/register_prompt.do") {
+        $nextBtn.attr("disabled", true); // 禁用下一步
+    } else if (pathName === "/login_prompt.do" || pathName === "/login.do") {
+        $sendMsgBtn.attr("disabled", true); // 禁用发送短信按钮
+        $smsVerifyCode.val("").attr("disabled", true).parent().find(".error-tips").addClass("invisible").removeClass("visible"); // 禁用短信文本框
+    }
 }
 
 /**
@@ -76,18 +90,27 @@ function invalidImageVerifyCodeFeedback(msg) {
  * 短信验证码输入正确的反馈
  */
 function validSMSVerifyCodeFeedback(msg) {
-    $registerBtn.attr("disabled", false).Shake(1, 6); // 启用注册按钮
     $smsVerifyCode.parent().find(".error-tips").addClass("invisible").removeClass("visible"); // 关闭错误提示
     $smsVerifyCode.parent().find(".normal-tips").show().text(msg); // 打开正常提示
+    if (pathName === "/register_prompt.do") {
+        $registerBtn.attr("disabled", false).Shake(1, 6); // 启用注册按钮
+    } else if (pathName === "/login_prompt.do" || pathName === "/login.do") {
+        $("#submit1").attr("disabled", false).Shake(1, 6); // 启用登录
+    }
 }
 
 /**
  * 短信验证码输入错误的反馈
  */
 function invalidSMSVerifyCodeFeedback(msg) {
-    $registerBtn.attr("disabled", true); // 禁用注册按钮
+
     $smsVerifyCode.parent().find(".error-tips").addClass("visible").removeClass("invisible").text(msg); // 打开错误提示
     $smsVerifyCode.parent().find(".normal-tips").hide(); // 关闭正常提示
+    if (pathName === "/register_prompt.do") {
+        $registerBtn.attr("disabled", true); // 禁用注册按钮
+    } else if (pathName === "/login_prompt.do" || pathName === "/login.do") {
+        $("#submit1").attr("disabled", true); // 禁用登录按钮
+    }
 }
 
 /**
@@ -140,20 +163,39 @@ function checkPhone() {
         // 手机号不合法
         invalidPhoneFeedback();
     } else {
+        var type;
+        if (pathName === "/register_prompt.do") {
+            type = "register";
+        } else if (pathName === "/login_prompt.do" || pathName === "/login.do") {
+            type = "login";
+        }
+
         // 手机号合法,验证手机号是否已注册
         $.post("/checkPhone.do",
             {
-                phone: $phone.val()
+                phone: $phone.val(),
+                type: type
             },
             function (result) {
                 var flag = result.flag;
-                if (flag === true) {
-                    validPhoneFeedback();
-                } else {
-                    invalidPhoneFeedback();
-                    $errorNotice.slideDown("fast");
-                    $rightNotice.hide();
+                if (flag === true) { // 手机号不存在
+                    if (type === "register") {
+                        validPhoneFeedback();
+                    } else if (type === "login") {
+                        invalidPhoneFeedback();
+                        $errorNotice.slideDown("fast");
+                        $rightNotice.hide();
+                    }
+                } else { // 手机号存在
+                    if (type === "register") {
+                        invalidPhoneFeedback();
+                        $errorNotice.slideDown("fast");
+                        $rightNotice.hide();
+                    } else if (type === "login") {
+                        validPhoneFeedback();
+                    }
                 }
+
             }, "json");
     }
 }
@@ -187,10 +229,17 @@ function checkImageCode() {
  */
 function checkSMSCode() {
     if ($smsVerifyCode.val().length === 4) {
+        var type;
+        if (pathName === "/register_prompt.do") {
+            type = "register";
+        } else if (pathName === "/login_prompt.do" || pathName === "/login.do") {
+            type = "login";
+        }
         // 发送短信验证码
         $.post("/checkSMS.do",
             {
-                code: $smsVerifyCode.val()
+                code: $smsVerifyCode.val(),
+                type: type
             },
             function (result) {
                 console.log("sms: " + result);
@@ -212,9 +261,15 @@ $(function () {
     // 手机号文本框
     $phone.keyup(function () {
         checkPhone();
+        console.log(1);
+        // $phone.parent().find(".normal-tips").hide(); // 关闭正常提示
+        // $phone.parent().find(".error-tips").hide(); // 打开错误提示
     }).focus(function () {
+        console.log(2);
         $errorNotice.hide();
         $rightNotice.hide();
+        $phone.parent().find(".normal-tips").hide(); // 关闭正常提示
+        $phone.parent().find(".error-tips").hide(); // 打开错误提示
     });
 
     // 下一步按钮
@@ -235,17 +290,26 @@ $(function () {
     // 发送短信按钮
     $sendMsgBtn.click(function () {
         countdown($(this));
+        var type;
+        if (pathName === "/register_prompt.do") {
+            type = "register";
+        } else if (pathName === "/login_prompt.do" || pathName === "/login.do") {
+            type = "login";
+        }
         // 发送短信验证码
         $.post("/sendSMS.do",
             {
-                phone: $phone.val()
+                phone: $phone.val(),
+                type : type
             },
             function (result) {
                 console.log("sendSMS: " + result);
                 var flag = result.flag;
                 var msg = result.msg;
                 if (flag === true) {
-                    validSMSVerifyCodeFeedback(msg);
+                    //validSMSVerifyCodeFeedback(msg);
+                    $smsVerifyCode.parent().find(".error-tips").addClass("invisible").removeClass("visible"); // 关闭错误提示
+                    $smsVerifyCode.parent().find(".normal-tips").show().text(msg); // 打开正常提示
                 } else {
                     console.log("sms fail");
                     invalidSMSVerifyCodeFeedback(msg);
@@ -270,10 +334,22 @@ $(function () {
                 var flag = result.flag;
                 var msg = result.msg;
                 if (flag === true) {
-                    window.location.href="/message/list.do";
+                    window.location.href = "/message/list.do";
                 } else {
-                    window.location.href="/register_prompt.do";
+                    window.location.href = "/register_prompt.do";
                 }
             }, "json");
+    });
+
+    $changeToPage1.click(function () {
+        $loginPage2.hide();
+        $loginPage1.show();
+        $(".error-tips").hide();
+    });
+
+    $changeToPage2.click(function () {
+        $loginPage1.hide();
+        $loginPage2.show();
+        $(".error-tips").hide();
     });
 });

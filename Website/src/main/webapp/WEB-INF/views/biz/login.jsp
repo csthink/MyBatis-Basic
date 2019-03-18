@@ -31,56 +31,65 @@
 </nav>
 
 <div class="container" style="margin-top: 25px;">
-    <%--<div class="col-4 offset-4" style="height: 3rem;">--%>
-        <%--<div class="row justify-content-center" style="margin-top: 1rem; display: none;" id="rightNotice">--%>
-            <%--<div class="alert alert-success alert-dismissible fade show" role="alert">--%>
-                <%--<strong>恭喜您!</strong> 该手机号可以用于注册.--%>
-                <%--<button type="button" class="close" data-dismiss="alert" aria-label="Close">--%>
-                    <%--<span aria-hidden="true">&times;</span>--%>
-                <%--</button>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-        <%--<div class="row justify-content-center" style="margin-top: 1rem; display:none;" id="errorNotice">--%>
-            <%--<div class="alert alert-warning alert-dismissible fade show" role="alert">--%>
-                <%--<strong>该手机号已被注册!</strong> 请直接 <a href="/login_prompt.do">登录</a>--%>
-                <%--<button type="button" class="close" data-dismiss="alert" aria-label="Close">--%>
-                    <%--<span aria-hidden="true">&times;</span>--%>
-                <%--</button>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
+    <div class="col-4 offset-4" style="height: 3rem;">
+        <%
+            String errorMsg = "";
+            if (null != request.getAttribute("errorMsg")) {
+                errorMsg = request.getAttribute("errorMsg").toString();
+            }
+        %>
+        <%
+            if (null != request.getAttribute("errorMsg")) {
+        %>
+            <div class="row justify-content-center" style="margin-top: 1rem;" id="errorMsg">
+        <%
+        } else {
+        %>
+        <div class="row justify-content-center" style="margin-top: 1rem; display:none;" id="errorMsg">
+        <%
+            }
+        %>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong><%=errorMsg%></strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-4 offset-4" style="height: 3rem;">
+        <div class="row justify-content-center" style="margin-top: 1rem; display: none;" id="rightNotice">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>恭喜您!</strong> 该手机号可以用于登录.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div class="row justify-content-center" style="margin-top: 1rem; display:none;" id="errorNotice">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>该手机号尚未注册!</strong> 请先 <a href="/register_prompt.do">注册</a>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <div class="row" style="margin-top: 2rem">
         <div class="col-8 offset-2 jumbotron">
-            <form>
-                <div id="regPage1">
+            <div id="loginPage1">
+                <form action="/login.do" method="post">
+                    <input type="hidden" name="type" value="sms">
                     <div class="form-group row">
                         <label for="phone" class="col-sm-3 col-form-label text-right">手机</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入手机号" autofocus>
-                            <small class="normal-tips text-dark">此手机将作为登录用户名，请谨慎填写</small>
+                            <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入手机号"
+                                   autofocus>
+                            <small class="normal-tips text-dark"></small>
                             <small class="error-tips text-danger" style="display: none;">手机号无效</small>
                         </div>
                     </div>
-                    <div class="form-group row" style="margin-top: 4rem;">
-                        <div class="col-sm-2 offset-5">
-                            <button type="button" class="btn btn-dark" id="nextBtn" disabled>下一步</button>
-                        </div>
-                    </div>
-                </div>
-                <div id="regPage2" style="display: none;">
-                    <div class="form-group row">
-                        <label for="imageVerifyCode" class="col-sm-3 col-form-label text-right">图形验证码</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="imageVerifyCode" placeholder="请输入图形验证码" name="imageVerifyCode">
-                            <small class="normal-tips text-dark"></small>
-                            <small class="error-tips text-danger invisible">图形验证码错误</small>
-                        </div>
-                        <div class="col-sm-3">
-                            <img src="/captcha.do" id="verifyImage" alt="图形验证码" width="100%" height="40px" onclick="javascript:changeVerifyImage()" style="cursor: pointer;">
-                        </div>
-                    </div>
-
                     <div class="form-group row">
                         <label for="smsVerifyCode" class="col-sm-3 col-form-label text-right">手机验证码</label>
                         <div class="col-sm-6">
@@ -95,11 +104,48 @@
 
                     <div class="form-group row" style="margin-top: 4rem;">
                         <div class="col-sm-2 offset-5">
-                            <button type="submit" class="btn btn-dark" id="registerBtn" disabled>注册</button>
+                            <button type="submit" class="btn btn-dark submit" id="submit1" disabled>登录</button>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+                <a href="javascript:void(0)" id="changeToPage2">
+                    <small>使用账号密码登录</small>
+                </a>
+            </div>
+
+            <div id="loginPage2" style="display: none;">
+                <form action="/login.do" method="post">
+                    <input type="hidden" name="type" value="pwd">
+                    <div class="form-group row">
+                        <label for="phone2" class="col-sm-3 col-form-label text-right">手机</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="phone2" name="phone" placeholder="请输入手机号"
+                                   autofocus>
+                            <small class="normal-tips text-dark"></small>
+                            <small class="error-tips text-danger" style="display: none;">手机尚未注册，请先<a href="/register_prompt.do">注册</a></small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="password" class="col-sm-3 col-form-label text-right">密码</label>
+                        <div class="col-sm-6">
+                            <input type="password" class="form-control" id="password" placeholder="请输入密码"
+                                   name="password">
+                            <small class="normal-tips text-dark"></small>
+                            <small class="error-tips text-danger invisible">密码无效</small>
+                        </div>
+                        <div class="col-sm-3">
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-top: 4rem;">
+                        <div class="col-sm-2 offset-5">
+                            <button type="submit" class="btn btn-dark submit" id="submit2">登录</button>
+                        </div>
+                    </div>
+                </form>
+                <a href="javascript:void(0)" id="changeToPage1">
+                    <small>使用短信快捷登录</small>
+                </a>
+            </div>
         </div>
     </div>
 </div><!-- /container -->

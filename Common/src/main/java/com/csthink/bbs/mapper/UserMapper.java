@@ -40,7 +40,7 @@ public interface UserMapper {
      * @param phone 手机号
      * @return 用户集合
      */
-    @Select("SELECT id FROM user WHERE phone = #{phone}")
+    @Select("SELECT * FROM user WHERE phone = #{phone}")
     List<User> findUserByPhone(@Param("phone") String phone);
 
     /**

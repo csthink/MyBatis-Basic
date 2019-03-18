@@ -41,6 +41,11 @@ public class RegisterServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (null != req.getSession().getAttribute("user")) {
+            resp.sendRedirect("/message/list.do");
+            return;
+        }
+
         if ("/register_prompt.do".equals(req.getServletPath())) { // 渲染请求注册页面
             req.getRequestDispatcher("/WEB-INF/views/biz/register.jsp").forward(req, resp);
         } else if ("/register.do".equals(req.getServletPath())) { // 处理注册用户操作
@@ -94,7 +99,7 @@ public class RegisterServlet extends HttpServlet {
 
             data.put("flag", flag);
             data.put("msg", msg);
-            System.out.println("data: " + data);
+            logger.info("注册保存操作, flag:" + flag + ",msg: " + msg);
             JsonUtils.json(resp, data);
         }
     }
