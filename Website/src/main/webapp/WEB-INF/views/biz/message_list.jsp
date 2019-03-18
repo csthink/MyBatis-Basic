@@ -25,9 +25,10 @@
                 User user = (User)session.getAttribute("user");
         %>
             <div class="btn-group">
-                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Admin
-                </button>
+                <a href="return javascript:void(0)" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%=user.getUsername() %></a>
+                <%--<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--%>
+                    <%--<%=user.getUsername() %>--%>
+                <%--</button>--%>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="#">我的信息</a>
                     <a class="dropdown-item" href="#">我的留言</a>

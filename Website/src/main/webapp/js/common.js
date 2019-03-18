@@ -242,11 +242,38 @@ $(function () {
             },
             function (result) {
                 console.log("sendSMS: " + result);
+                var flag = result.flag;
+                var msg = result.msg;
+                if (flag === true) {
+                    validSMSVerifyCodeFeedback(msg);
+                } else {
+                    console.log("sms fail");
+                    invalidSMSVerifyCodeFeedback(msg);
+                }
             }, "json");
     });
 
     // 短信验证码文本框
     $smsVerifyCode.keyup(function () {
         checkSMSCode();
+    });
+
+    // 注册操作
+    $registerBtn.click(function () {
+        $.post("/register.do",
+            {
+                phone: $phone.val(),
+                smsCode: $smsVerifyCode.val()
+            },
+            function (result) {
+                console.log("注册操作: " + result);
+                var flag = result.flag;
+                var msg = result.msg;
+                if (flag === true) {
+                    window.location.href="/message/list.do";
+                } else {
+                    window.location.href="/register_prompt.do";
+                }
+            }, "json");
     });
 });

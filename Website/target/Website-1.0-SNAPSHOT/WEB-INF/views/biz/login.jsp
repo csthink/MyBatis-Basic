@@ -7,7 +7,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta content="initial-scale=1, shrink-to-fit=no, width=device-width" name="viewport">
-    <title>小不点注册页面</title>
+    <title>小不点登录页面</title>
     <!-- Add Material font (Roboto) and Material icon as needed -->
     <link rel="stylesheet" href="/css/font.css">
     <!-- Add Material CSS, replace Bootstrap CSS -->
@@ -20,39 +20,39 @@
     </div>
     <div class="col-3 offset-4">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item active">
-                <a class="nav-link" href="/register_prompt.do">注册 <span class="sr-only">(current)</span></a>
-            </li>
             <li class="nav-item">
-                <a class="nav-link" href="/login_prompt.do">登录 </a>
+                <a class="nav-link" href="/register_prompt.do">注册 </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/login_prompt.do">登录 <span class="sr-only">(current)</span></a>
             </li>
         </ul>
     </div>
 </nav>
 
 <div class="container" style="margin-top: 25px;">
-    <div class="col-4 offset-4" style="height: 3rem;">
-        <div class="row justify-content-center" style="margin-top: 1rem; display: none;" id="rightNotice">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>恭喜您!</strong> 该手机号可以用于注册.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        </div>
-        <div class="row justify-content-center" style="margin-top: 1rem; display:none;" id="errorNotice">
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>该手机号已被注册!</strong> 请直接 <a href="/login_prompt.do">登录</a>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        </div>
-    </div>
+    <%--<div class="col-4 offset-4" style="height: 3rem;">--%>
+        <%--<div class="row justify-content-center" style="margin-top: 1rem; display: none;" id="rightNotice">--%>
+            <%--<div class="alert alert-success alert-dismissible fade show" role="alert">--%>
+                <%--<strong>恭喜您!</strong> 该手机号可以用于注册.--%>
+                <%--<button type="button" class="close" data-dismiss="alert" aria-label="Close">--%>
+                    <%--<span aria-hidden="true">&times;</span>--%>
+                <%--</button>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+        <%--<div class="row justify-content-center" style="margin-top: 1rem; display:none;" id="errorNotice">--%>
+            <%--<div class="alert alert-warning alert-dismissible fade show" role="alert">--%>
+                <%--<strong>该手机号已被注册!</strong> 请直接 <a href="/login_prompt.do">登录</a>--%>
+                <%--<button type="button" class="close" data-dismiss="alert" aria-label="Close">--%>
+                    <%--<span aria-hidden="true">&times;</span>--%>
+                <%--</button>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
 
     <div class="row" style="margin-top: 2rem">
         <div class="col-8 offset-2 jumbotron">
-            <form method="post" onsubmit="return event.preventDefault()">
+            <form>
                 <div id="regPage1">
                     <div class="form-group row">
                         <label for="phone" class="col-sm-3 col-form-label text-right">手机</label>

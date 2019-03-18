@@ -1,4 +1,3 @@
-<%@ page import="com.csthink.bbs.entity.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -53,7 +52,7 @@
 
     <div class="row" style="margin-top: 2rem">
         <div class="col-8 offset-2 jumbotron">
-            <form>
+            <form method="post" onsubmit="return event.preventDefault()">
                 <div id="regPage1">
                     <div class="form-group row">
                         <label for="phone" class="col-sm-3 col-form-label text-right">手机</label>

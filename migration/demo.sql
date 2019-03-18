@@ -59,3 +59,5 @@ CREATE TABLE `user` (
 
 INSERT INTO `user`
 VALUES (NULL, 'admin', 'admin', '侯亮平', 'm', '1989-01-01 00:00:00', '15012345678', '三清观2-1', '', '0,1', NOW(), NOW());
+
+ALTER TABLE `jdbc`.`user` ADD UNIQUE INDEX `user_phone`(`phone`) USING BTREE;

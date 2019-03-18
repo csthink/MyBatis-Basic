@@ -3,13 +3,52 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
-    <welcome-file-list>
+    <welcome-file-list> <!-- 指定欢迎页面 -->
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-    <error-page>
+    <session-config> <!-- 会话超时配置，单位分钟 -->
+        <session-timeout>360</session-timeout>
+    </session-config>
+    
+    <context-param>
+        <param-name>CAPTCHA_SESSION_KEY</param-name>
+        <param-value>captchaCode</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>CAPTCHA_EXPIRE_TIME</param-name>
+        <param-value>60</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>SMS_REG_SESSION_KEY</param-name>
+        <param-value>smsRegCode</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>SMS_REG_EXPIRE_TIME</param-name>
+        <param-value>600</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>SMS_LOGIN_SESSION_KEY</param-name>
+        <param-value>smsLoginCode</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>SMS_LOGIN_EXPIRE_TIME</param-name>
+        <param-value>600</param-value>
+    </context-param>
+
+    <error-page> <!--当系统出现404错误，跳转到页面 404页面-->
         <error-code>404</error-code>
         <location>/WEB-INF/views/error/404.jsp</location>
+    </error-page>
+
+    <error-page> <!-- 当系统出现java.lang.NullPointerException，跳转到页面500页面 -->
+        <exception-type>java.lang.NullPointerException</exception-type>
+        <location>/WEB-INF/views/error/500.jsp</location>
     </error-page>
 
     <error-page>
@@ -59,6 +98,16 @@
     <servlet-mapping>
         <servlet-name>register</servlet-name>
         <url-pattern>/register.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>com.csthink.bbs.servlet.LogoutServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout.do</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -144,5 +193,25 @@
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.woff2</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.xml</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.json</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.map</url-pattern>
     </servlet-mapping>
 </web-app>
