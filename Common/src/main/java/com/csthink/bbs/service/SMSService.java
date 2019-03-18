@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 public class SMSService {
@@ -30,27 +32,6 @@ public class SMSService {
 
     private static final Logger logger = LoggerFactory.getLogger(SMSService.class);
 
-//    public static void main(String[] args) {
-//        logger.trace("Trace Level");
-//        logger.debug("Debug Level");
-//        logger.info("Info Level");
-//        logger.warn("Warn Level");
-//        logger.error("Error Level");
-
-//        JSONObject json = null;
-//        SMSService service = new SMSService();
-//        String result = service.send("15056992627","测试短信");
-//        json = JSONObject.parseObject(result);
-//
-//        if (json.getIntValue("code") != 0) {
-//            System.out.println("短信发送失败");
-//            System.out.println(json.getString("data"));
-//            System.out.println(json.getString("code"));
-//        } else {
-//            System.out.println("短信发送成功");
-//        }
-//    }
-
     public SMSService() {
         Properties properties = this.getProperties();
         this.appId = (String) properties.get("APP_ID");
@@ -60,29 +41,48 @@ public class SMSService {
 
     /**
      * 发送单条短信
-     * @param phone 手机号
+     *
+     * @param phone   手机号
      * @param content 短信内容
      * @return
      */
-    public String send(String phone, String content) {
+    public Map<String, Object> send(String phone, String content) {
         ZhenziSmsClient client = new ZhenziSmsClient(apiUrl, appId, appSecret);
-        String result = "";
-        JSONObject jsonObject = new JSONObject();
+        int code = 1000;
+        String msg = "";
+        JSONObject jsonObject = null;
+
+        Map<String, Object> result = new HashMap<>();
 
         try {
             // 参数无效
-            if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(content)) {
-                jsonObject.put("code", "-1");
-                jsonObject.put("data", "参数缺失");
-                result =  jsonObject.toString();
+            if (StringUtils.isEmpty(phone) && StringUtils.isEmpty(content)) {
+                msg = "参数缺失";
+                logger.info("SMSService -> send 请求参数缺失");
             } else {
-                result = client.send(phone, content);
+                String sendResult = client.send(phone, content); // 单条发送短信
+                jsonObject = JSONObject.parseObject(sendResult); // 解析短信发送结果
+                int resultCode = jsonObject.getIntValue("code");
+                String data = jsonObject.getString("data");
+                logger.info("phone: " + phone + " content: " + content + " code: " + resultCode + " data: " + data);
+
+                if (resultCode != 0) {
+                    code = 1100;
+                    msg = "验证码发送失败，请重新发送!";
+                } else {
+                    code = 200;
+                    msg = "验证码已发送";
+                }
             }
+
+            result.put("code", code);
+            result.put("msg", msg);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return result;
+
     }
 
 

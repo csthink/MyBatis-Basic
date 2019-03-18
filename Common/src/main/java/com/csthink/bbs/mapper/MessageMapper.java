@@ -25,13 +25,13 @@ public interface MessageMapper {
     })
     List<Message> getMessages(@Param("skip") Integer skip, @Param("size") Integer size);
 
-
     /**
-     * 分页根据用户id查询消息
-     * @param uid 用户编号 uid
+     * 根据用户uid分页查询消息
+     *
+     * @param uid  用户uid
      * @param skip 跳过的记录数，也就是从哪条开始查询
      * @param size 要查询的数量
-     * @return 指定用户的消息集合
+     * @return 消息对象
      */
     @Select("SELECT id, uid, username, title, content, create_time createTime FROM message " +
             "WHERE uid = #{uid} ORDER BY create_time DESC LIMIT #{skip}, #{size}\"")
@@ -39,6 +39,7 @@ public interface MessageMapper {
 
     /**
      * 统计消息记录总数
+     *
      * @return 消息记录总数
      */
     @Select("SELECT count(*) FROM message")
@@ -46,6 +47,7 @@ public interface MessageMapper {
 
     /**
      * 统计指定用户的消息记录总数
+     *
      * @param uid 用户编号 uid
      * @return 用户的消息记录总数
      */
@@ -54,16 +56,21 @@ public interface MessageMapper {
 
     /**
      * 新增消息
-     * @param message 消息信息
+     *
+     * @param message 消息对象
+     * @return 受影响行数
      */
     @Insert("INSERT message(uid, username, title, content, create_time) " +
             "VALUES(#{message.uid}, #{message.username}, #{message.title}, #{message.content}, #{message.createTime})")
-    void addMessage(Message message);
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    int addMessage(@Param("message") Message message);
 
     /**
      * 根据用户uid 删除消息
+     *
      * @param uid 用户编号 uid
+     * @return 受影响行数
      */
     @Delete("DELETE FROM message WHERE uid = #{uid}")
-    void deleteMessageByUid(Integer uid);
+    int deleteMessageByUid(@Param("uid") Integer uid);
 }
